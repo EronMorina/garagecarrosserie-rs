@@ -40,7 +40,6 @@ LANGUES (FR / DE / EN)
   formEndpoint URL du service d'envoi du formulaire (Formspree, PHP, etc.)
 
   Autres éléments à intégrer :
-  - Note et avis Google (section « La confiance de nos clients »)
   - Carte Google Maps : intégrée (section Contact). À mentionner dans la
     politique de confidentialité (Google peut déposer des cookies).
   - Pages légales (pied de page). Instagram : lié (fait).

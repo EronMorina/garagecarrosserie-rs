@@ -253,17 +253,6 @@ const I18N = {
   "Attention aux détails": {de:"Liebe zum Detail", en:"Attention to detail"},
   "Contrôle sous lumière avant chaque restitution.": {de:"Kontrolle unter Licht vor jeder Rückgabe.", en:"Inspection under light before every handover."},
 
-  /* ---- reviews ---- */
-  "Avis clients": {de:"Kundenbewertungen", en:"Customer reviews"},
-  "La confiance de nos clients": {de:"Das Vertrauen unserer Kundschaft", en:"Our customers’ trust"},
-  "À intégrer : avis Google": {de:"Folgt: Google-Bewertungen", en:"To add: Google reviews"},
-  "Note et nombre d’avis Google :": {de:"Google-Bewertung und Anzahl Bewertungen:", en:"Google rating and number of reviews:"},
-  "Voir nos avis sur Google": {de:"Unsere Bewertungen auf Google", en:"See our reviews on Google"},
-  "Avis client 1": {de:"Kundenbewertung 1", en:"Customer review 1"},
-  "Avis client 2": {de:"Kundenbewertung 2", en:"Customer review 2"},
-  "Avis client 3": {de:"Kundenbewertung 3", en:"Customer review 3"},
-  "Emplacements réservés aux avis clients": {de:"Platzhalter für Kundenbewertungen", en:"Placeholders for customer reviews"},
-
   /* ---- about ---- */
   "Mercedes-AMG GT 4 portes bleu mat devant l’entrée de l’atelier": {de:"Mattblauer Mercedes-AMG GT 4-Türer vor der Werkstatteinfahrt", en:"Matte blue Mercedes-AMG GT 4-door in front of the workshop entrance"},
   "FONDÉE EN": {de:"GEGRÜNDET", en:"FOUNDED"},

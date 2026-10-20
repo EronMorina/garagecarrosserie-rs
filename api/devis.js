@@ -48,14 +48,16 @@ module.exports = async (req, res) => {
   }<tr><td style="color:#5B636B">Photos jointes</td><td>${photos.length}</td></tr></table>`;
 
   try {
-    await transportFor(465, SMTP_USER, SMTP_PASS).sendMail({
+    const info = await transportFor(465, SMTP_USER, SMTP_PASS).sendMail({
       from: { name: 'Site web — Carrosserie RS Suisse', address: SMTP_USER },
       to: MAIL_TO || SMTP_USER,
       replyTo: { name: `${d.prenom} ${d.nom}`, address: d.email }, // "Répondre" goes straight to the customer
       subject: `Demande de devis — ${d.prenom} ${d.nom} · ${d.service} · ${d.marque} ${d.modele}`,
       text, html, attachments: photos
     });
-    return res.status(200).json({ ok:true });
+    // the mail server's own receipt (e.g. "250 ... queued as ABC123"), visible in Vercel → Logs, to trace a message
+    console.log('devis: accepted', info?.response, 'to', info?.accepted, 'rejected', info?.rejected, info?.messageId);
+    return res.status(200).json({ ok:true, receipt: String(info?.response || '').slice(0, 120) });
   } catch (err) {
     console.error('devis: sending failed', err && err.code, err && err.message);
     return res.status(502).json({ ok:false, error:'send', code: (err && err.code) || 'ERROR' });

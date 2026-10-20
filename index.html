@@ -22,7 +22,7 @@
 <link rel="icon" type="image/png" href="img/mark.png">
 <link rel="apple-touch-icon" href="img/mark.png">
 <link rel="preload" href="img/hero.jpg" as="image">
-<link rel="stylesheet" href="css/styles.css?v=8">
+<link rel="stylesheet" href="css/styles.css?v=9">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"AutoBodyShop","name":"Carrosserie RS Suisse","url":"https://www.garagecarrosserie-rs.ch/","logo":"https://www.garagecarrosserie-rs.ch/img/logo.png","image":"https://www.garagecarrosserie-rs.ch/img/og-image.png","foundingDate":"2021","telephone":"+41 22 785 18 50","email":"info@garagecarrosserie-rs.ch","address":{"@type":"PostalAddress","streetAddress":"Rue du Pré-Bouvier 10","postalCode":"1242","addressLocality":"Satigny","addressRegion":"GE","addressCountry":"CH"},"areaServed":"CH","sameAs":["https://www.instagram.com/carrosserierssuisse/"],"description":"Réparation de carrosserie, peinture automobile, tôlerie et redressage, remplacement de pare-brise, polissage de carrosserie."}
 </script>
@@ -408,14 +408,16 @@
           <span class="msg">Votre accord est nécessaire pour traiter la demande.</span>
         </div>
 
+        <div class="hp" aria-hidden="true" data-i18n-skip><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
         <div class="form__end">
           <small>Réponse personnalisée, sans engagement.</small>
           <button class="btn btn--red" type="submit">Envoyer ma demande <svg><use href="#i-arrow"/></svg></button>
         </div>
+        <p class="form__status" id="formStatus" role="status"></p>
       </div>
       <div class="ok" id="formOk" hidden tabindex="-1">
         <span class="tick"><svg><use href="#i-check"/></svg></span>
-        <h3 id="okTitle">Merci, votre demande est prête.</h3>
+        <h3 id="okTitle">Merci, votre demande a bien été envoyée.</h3>
         <p class="muted" style="max-width:52ch">Nous étudions votre demande et revenons vers vous par <b id="okVia">téléphone</b> dans les meilleurs délais. Pour une demande urgente, appelez-nous directement.</p>
         <button type="button" class="link" id="formReset">Faire une nouvelle demande <svg><use href="#i-arrow"/></svg></button>
       </div>
@@ -516,7 +518,7 @@
   </div>
 </div>
 
-<script src="js/i18n.js?v=8"></script>
-<script src="js/main.js?v=5"></script>
+<script src="js/i18n.js?v=9"></script>
+<script src="js/main.js?v=9"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ const CONFIG = {
   email: 'info@garagecarrosserie-rs.ch',
   address: 'Rue du Pré-Bouvier 10, 1242 Satigny, Genève',
   waMessage: 'Bonjour Carrosserie RS Suisse, je souhaiterais obtenir des informations concernant mon véhicule.',
-  formEndpoint: null                    // URL du service d'envoi (ex. Formspree, API maison) à connecter
+  formEndpoint: '/api/devis'            // envoi par e-mail via la boîte Infomaniak (voir api/devis.js)
 };
 
 const SERVICES = [
@@ -308,20 +308,49 @@ function check(){
   return firstBad;
 }
 form.addEventListener('input',e=>{ const f=e.target.closest('.f'); if(f&&f.classList.contains('err')) check(); });
+// photos are shrunk to JPEG in the browser so a request with 10 photos stays under the server's 4.5 MB limit
+async function shrink(file,max,q){
+  try{
+    const bmp=await createImageBitmap(file), s=Math.min(1,max/Math.max(bmp.width,bmp.height));
+    const c=document.createElement('canvas'); c.width=Math.round(bmp.width*s); c.height=Math.round(bmp.height*s);
+    c.getContext('2d').drawImage(bmp,0,0,c.width,c.height); bmp.close&&bmp.close();
+    return c.toDataURL('image/jpeg',q).split(',')[1];
+  }catch(e){ return null; } // a format this browser can't read is left out
+}
+async function photoPayload(){
+  let out=(await Promise.all(files.map(f=>shrink(f,1400,.72)))).filter(Boolean);
+  if(out.reduce((n,d)=>n+d.length,0)>3.6e6) out=(await Promise.all(files.map(f=>shrink(f,1000,.6)))).filter(Boolean);
+  return out.map(data=>({data}));
+}
+let status=null; // 'sending' | 'error' | null
+const statusEl=$('#formStatus'), submitBtn=$('button[type="submit"]',form);
+function renderStatus(){
+  statusEl.textContent=status==='sending'?tr('Envoi en cours…'):status==='error'?tr('L’envoi n’a pas abouti. Réessayez, ou contactez-nous par téléphone ou WhatsApp.'):'';
+  statusEl.classList.toggle('is-err',status==='error');
+  submitBtn.disabled=status==='sending';
+}
+onLang.push(renderStatus);
 form.addEventListener('submit',async e=>{
   e.preventDefault();
+  if(status==='sending') return;
   const bad=check(); if(bad){ bad.focus(); return; }
-  const data=new FormData(form); files.forEach(f=>data.append('photos[]',f));
-  data.append('langue',lang); // so the reply can be written in the visitor's language
-  // Branchement futur : if (CONFIG.formEndpoint) await fetch(CONFIG.formEndpoint,{method:'POST',body:data});
-  sent={name:data.get('prenom').trim(), via:(data.get('contact')||'Téléphone').toLowerCase().replace('whatsapp','WhatsApp')};
+  const data=Object.fromEntries(new FormData(form)); delete data.photos; delete data.consent;
+  data.langue=lang; // so the reply can be written in the visitor's language
+  status='sending'; renderStatus();
+  try{
+    data.photos=await photoPayload();
+    const r=await fetch(CONFIG.formEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+  }catch(err){ status='error'; renderStatus(); return; }
+  status=null; renderStatus();
+  sent={name:data.prenom.trim(), via:(data.contact||'Téléphone').toLowerCase().replace('whatsapp','WhatsApp')};
   renderOk();
   $('#formBody').hidden=true; $('#formOk').hidden=false; $('#formOk').focus();
 });
 let sent=null;
-function renderOk(){ if(!sent) return; $('#okTitle').textContent=tr('Merci {name}, votre demande est prête.',{name:sent.name}); $('#okVia').textContent=tr(sent.via); }
+function renderOk(){ if(!sent) return; $('#okTitle').textContent=tr('Merci {name}, votre demande a bien été envoyée.',{name:sent.name}); $('#okVia').textContent=tr(sent.via); }
 onLang.push(renderOk);
-$('#formReset').addEventListener('click',()=>{ form.reset(); files=[]; skipped=0; sent=null; renderNote(); renderThumbs(); toggleIns(); $$('.f.err',form).forEach(f=>f.classList.remove('err')); $$('[aria-invalid]',form).forEach(el=>el.removeAttribute('aria-invalid')); $('#formOk').hidden=true; $('#formBody').hidden=false; $('#q-prenom').focus(); });
+$('#formReset').addEventListener('click',()=>{ form.reset(); files=[]; skipped=0; sent=null; status=null; renderStatus(); renderNote(); renderThumbs(); toggleIns(); $$('.f.err',form).forEach(f=>f.classList.remove('err')); $$('[aria-invalid]',form).forEach(el=>el.removeAttribute('aria-invalid')); $('#formOk').hidden=true; $('#formBody').hidden=false; $('#q-prenom').focus(); });
 
 /* apply the chosen language to the static page text */
 applyLang(true);

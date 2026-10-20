@@ -1,0 +1,9 @@
+{
+  "name": "garagecarrosserie-rs",
+  "private": true,
+  "description": "Site Carrosserie RS Suisse — l'envoi du formulaire de devis passe par api/devis.js (Vercel)",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "nodemailer": "10.0.13"
+  }
+}

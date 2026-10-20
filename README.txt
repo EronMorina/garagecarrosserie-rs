@@ -37,16 +37,29 @@ LANGUES (FR / DE / EN)
   whatsapp     +41 78 737 02 14 (fait)
   email        info@garagecarrosserie-rs.ch (fait)
   address      Rue du Pré-Bouvier 10, 1242 Satigny, Genève (fait)
-  formEndpoint URL du service d'envoi du formulaire (Formspree, PHP, etc.)
 
   Autres éléments à intégrer :
   - Carte Google Maps : intégrée (section Contact). À mentionner dans la
     politique de confidentialité (Google peut déposer des cookies).
   - Pages légales (pied de page). Instagram : lié (fait).
 
+FORMULAIRE DE DEVIS (envoi par e-mail)
+  Chaque demande est envoyée à info@garagecarrosserie-rs.ch, photos jointes,
+  via la boîte Infomaniak (fichier api/devis.js, exécuté par Vercel).
+  Réglages dans Vercel → Settings → Environment Variables (type Secret) :
+    SMTP_USER   info@garagecarrosserie-rs.ch
+    SMTP_PASS   mot de passe de la boîte (ou mot de passe d'application)
+    MAIL_TO     (facultatif) autre adresse de réception
+  Après un changement de mot de passe de la boîte e-mail, mettez à jour
+  SMTP_PASS dans Vercel puis relancez un déploiement (Deployments → Redeploy).
+  Le formulaire ne fonctionne que sur le site en ligne, pas en ouvrant
+  index.html directement depuis l'ordinateur.
+
 MISE EN LIGNE
-  Copiez le dossier tel quel sur n'importe quel hébergement (Infomaniak,
-  Hostpoint, Netlify, etc.). Tous les chemins sont relatifs.
+  Le site est hébergé sur Vercel, relié au dépôt GitHub : chaque envoi sur
+  GitHub (git push) met le site à jour automatiquement en quelques secondes.
+  Le formulaire de devis a besoin de Vercel (api/devis.js) ; sur un autre
+  hébergement, il faudrait l'adapter.
 
 APRÈS UNE MODIFICATION
   Si vous modifiez css/styles.css, js/main.js ou js/i18n.js, augmentez le

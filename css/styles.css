@@ -348,6 +348,11 @@ legend::after{content:"";flex:1;height:1px;background:var(--line-l)}
 .consent input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--red)}
 .form__end{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-top:8px}
 .form__end small{color:#5B636B;font-size:.82rem}
+.form__end .btn:disabled{opacity:.6;cursor:progress}
+.form__status{font-size:.9rem;color:#3E454C;margin:-18px 0 0}
+.form__status:empty{display:none}
+.form__status.is-err{color:var(--red-ink);border-left:2px solid var(--red);padding-left:12px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .ok{display:grid;gap:18px;justify-items:start;padding:24px 0}
 .ok .tick{width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center}
 .ok .tick svg{width:26px;height:26px}

@@ -19,9 +19,28 @@ const oneLine = v => clean(v, 200).replace(/\s+/g,' ');
 const escHtml = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const isEmail = v => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
 
+// short timeouts so a blocked connection fails in seconds instead of leaving the form spinning
+const transportFor = (port, user, pass) => nodemailer.createTransport({
+  host: 'mail.infomaniak.com', port, secure: port === 465, requireTLS: port !== 465,
+  auth: { user, pass },
+  connectionTimeout: 8000, greetingTimeout: 8000, socketTimeout: 20000
+});
+
 module.exports = async (req, res) => {
-  if (req.method !== 'POST') return res.status(405).json({ ok:false, error:'method' });
   const { SMTP_USER, SMTP_PASS, MAIL_TO } = process.env;
+  // TEMPORARY diagnostic: GET /api/devis?check=1 tries to log in on both ports, sends nothing
+  if (req.method === 'GET' && req.query && req.query.check) {
+    if (!SMTP_USER || !SMTP_PASS) return res.status(200).json({ configured:false });
+    const out = { configured:true, user: SMTP_USER, passHasSpaces: SMTP_PASS !== SMTP_PASS.trim() };
+    for (const port of [465, 587]) {
+      const t0 = Date.now();
+      try { await transportFor(port, SMTP_USER, SMTP_PASS).verify(); out[port] = 'ok'; }
+      catch (err) { out[port] = `${err.code || 'ERROR'}: ${String(err.response || err.message).slice(0, 160)}`; }
+      out[port] += ` (${Date.now() - t0} ms)`;
+    }
+    return res.status(200).json(out);
+  }
+  if (req.method !== 'POST') return res.status(405).json({ ok:false, error:'method' });
   if (!SMTP_USER || !SMTP_PASS) return res.status(500).json({ ok:false, error:'not-configured' });
 
   const b = (req.body && typeof req.body === 'object') ? req.body : {};
@@ -41,11 +60,7 @@ module.exports = async (req, res) => {
   }<tr><td style="color:#5B636B">Photos jointes</td><td>${photos.length}</td></tr></table>`;
 
   try {
-    const transport = nodemailer.createTransport({
-      host: 'mail.infomaniak.com', port: 465, secure: true,
-      auth: { user: SMTP_USER, pass: SMTP_PASS }
-    });
-    await transport.sendMail({
+    await transportFor(465, SMTP_USER, SMTP_PASS).sendMail({
       from: { name: 'Site web — Carrosserie RS Suisse', address: SMTP_USER },
       to: MAIL_TO || SMTP_USER,
       replyTo: { name: `${d.prenom} ${d.nom}`, address: d.email }, // "Répondre" goes straight to the customer
@@ -55,6 +70,6 @@ module.exports = async (req, res) => {
     return res.status(200).json({ ok:true });
   } catch (err) {
     console.error('devis: sending failed', err && err.code, err && err.message);
-    return res.status(502).json({ ok:false, error:'send' });
+    return res.status(502).json({ ok:false, error:'send', code: (err && err.code) || 'ERROR' });
   }
 };

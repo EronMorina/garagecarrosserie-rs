@@ -339,7 +339,8 @@ form.addEventListener('submit',async e=>{
   status='sending'; renderStatus();
   try{
     data.photos=await photoPayload();
-    const r=await fetch(CONFIG.formEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    const ctl=new AbortController(), timer=setTimeout(()=>ctl.abort(),45000); // never leave the form spinning
+    const r=await fetch(CONFIG.formEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),signal:ctl.signal}).finally(()=>clearTimeout(timer));
     if(!r.ok) throw new Error('HTTP '+r.status);
   }catch(err){ status='error'; renderStatus(); return; }
   status=null; renderStatus();

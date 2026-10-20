@@ -1,7 +1,9 @@
-/* Quote form → email, sent through the Infomaniak mailbox.
+/* Quote form → email, sent through the mailbox of info@garagecarrosserie-rs.ch.
    Runs on Vercel as /api/devis. Needs two environment variables set in Vercel
    (Settings → Environment Variables): SMTP_USER (the mailbox address) and
-   SMTP_PASS (its password). Optional: MAIL_TO to deliver somewhere else. */
+   SMTP_PASS (its password). Optional: SMTP_HOST, the mail server (default
+   mail.infomaniak.com, where the mailbox is hosted), and MAIL_TO to deliver
+   somewhere else. */
 const nodemailer = require('nodemailer');
 
 const MAX_PHOTOS = 10;
@@ -20,14 +22,15 @@ const escHtml = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt
 const isEmail = v => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
 
 // short timeouts so a blocked connection fails in seconds instead of leaving the form spinning
-const transportFor = (port, user, pass) => nodemailer.createTransport({
-  host: 'mail.infomaniak.com', port, secure: port === 465, requireTLS: port !== 465,
+const transportFor = (host, port, user, pass) => nodemailer.createTransport({
+  host, port, secure: port === 465, requireTLS: port !== 465,
   auth: { user, pass },
   connectionTimeout: 8000, greetingTimeout: 8000, socketTimeout: 20000
 });
 
 module.exports = async (req, res) => {
   const { SMTP_USER, SMTP_PASS, MAIL_TO } = process.env;
+  const SMTP_HOST = process.env.SMTP_HOST || 'mail.infomaniak.com';
   if (req.method !== 'POST') return res.status(405).json({ ok:false, error:'method' });
   if (!SMTP_USER || !SMTP_PASS) return res.status(500).json({ ok:false, error:'not-configured' });
 
@@ -48,7 +51,7 @@ module.exports = async (req, res) => {
   }<tr><td style="color:#5B636B">Photos jointes</td><td>${photos.length}</td></tr></table>`;
 
   try {
-    const info = await transportFor(465, SMTP_USER, SMTP_PASS).sendMail({
+    const info = await transportFor(SMTP_HOST, 465, SMTP_USER, SMTP_PASS).sendMail({
       from: { name: 'Site web — Carrosserie RS Suisse', address: SMTP_USER },
       to: MAIL_TO || SMTP_USER,
       replyTo: { name: `${d.prenom} ${d.nom}`, address: d.email }, // "Répondre" goes straight to the customer

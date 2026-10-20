@@ -28,18 +28,6 @@ const transportFor = (port, user, pass) => nodemailer.createTransport({
 
 module.exports = async (req, res) => {
   const { SMTP_USER, SMTP_PASS, MAIL_TO } = process.env;
-  // TEMPORARY diagnostic: GET /api/devis?check=1 tries to log in on both ports, sends nothing
-  if (req.method === 'GET' && req.query && req.query.check) {
-    if (!SMTP_USER || !SMTP_PASS) return res.status(200).json({ configured:false });
-    const out = { configured:true, user: SMTP_USER, passHasSpaces: SMTP_PASS !== SMTP_PASS.trim() };
-    for (const port of [465, 587]) {
-      const t0 = Date.now();
-      try { await transportFor(port, SMTP_USER, SMTP_PASS).verify(); out[port] = 'ok'; }
-      catch (err) { out[port] = `${err.code || 'ERROR'}: ${String(err.response || err.message).slice(0, 160)}`; }
-      out[port] += ` (${Date.now() - t0} ms)`;
-    }
-    return res.status(200).json(out);
-  }
   if (req.method !== 'POST') return res.status(405).json({ ok:false, error:'method' });
   if (!SMTP_USER || !SMTP_PASS) return res.status(500).json({ ok:false, error:'not-configured' });
 

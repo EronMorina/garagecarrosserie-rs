@@ -275,8 +275,6 @@ const I18N = {
   "Nous vous recontactons par le moyen de votre choix.": {de:"Wir melden uns auf dem Weg Ihrer Wahl bei Ihnen.", en:"We get back to you the way you prefer."},
   "Nous fixons ensemble un rendez-vous à l’atelier pour le devis définitif.": {de:"Gemeinsam vereinbaren wir einen Termin in der Werkstatt für die definitive Offerte.", en:"Together we set an appointment at the workshop for the final quote."},
   "Les champs marqués * sont obligatoires": {de:"Mit * markierte Felder sind Pflichtfelder", en:"Fields marked * are required"},
-  "Démo · envoi à connecter": {de:"Demo · Versand noch nicht verbunden", en:"Demo · sending not connected yet"},
-  "Le formulaire n’est relié à aucun serveur pour l’instant": {de:"Das Formular ist noch mit keinem Server verbunden", en:"The form isn’t connected to a server yet"},
   "Vos coordonnées": {de:"Ihre Kontaktdaten", en:"Your details"},
   "Prénom *": {de:"Vorname *", en:"First name *"},
   "Indiquez votre prénom.": {de:"Bitte geben Sie Ihren Vornamen an.", en:"Please enter your first name."},

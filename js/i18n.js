@@ -217,7 +217,7 @@ const I18N = {
   "Votre mobilité": {de:"Sie bleiben", en:"You stay"},
   "continue.": {de:"mobil.", en:"mobile."},
   "DÈS CHF": {de:"AB CHF", en:"FROM CHF"},
-  "Pour toute réparation dès CHF 1’500.–, un véhicule de remplacement vous est mis gratuitement à disposition pendant la durée des travaux.": {de:"Bei jeder Reparatur ab CHF 1’500.– stellen wir Ihnen für die Dauer der Arbeiten kostenlos ein Ersatzfahrzeug zur Verfügung.", en:"For any repair from CHF 1’500.–, a replacement vehicle is provided free of charge for the duration of the work."},
+  "Pour toute réparation à partir de CHF 1’500.–, nous mettons gratuitement à votre disposition un véhicule de remplacement pendant toute la durée des travaux. Vous restez mobile, sans frais supplémentaires.": {de:"Bei jeder Reparatur ab CHF 1’500.– stellen wir Ihnen für die gesamte Dauer der Arbeiten kostenlos ein Ersatzfahrzeug zur Verfügung. So bleiben Sie mobil – ohne Zusatzkosten.", en:"For any repair from CHF 1’500.–, we provide a free replacement vehicle for the entire duration of the work. You stay mobile, at no extra cost."},
   "Demander les conditions": {de:"Bedingungen anfragen", en:"Ask about the conditions"},
 
   /* ---- gallery ---- */
@@ -349,7 +349,7 @@ const I18N = {
   "Combien de temps dure une réparation ?": {de:"Wie lange dauert eine Reparatur?", en:"How long does a repair take?"},
   "La durée varie selon les dégâts, les pièces nécessaires et les travaux de peinture. Nous vous indiquons une estimation lors du devis et vous tenons informé en cas de changement.": {de:"Die Dauer hängt von den Schäden, den benötigten Teilen und den Lackierarbeiten ab. Mit der Offerte erhalten Sie eine Zeitschätzung, und wir informieren Sie bei Änderungen.", en:"It varies with the damage, the parts needed and the paintwork. We give you an estimate with the quote and keep you informed of any changes."},
   "Proposez-vous un véhicule de remplacement ?": {de:"Bieten Sie ein Ersatzfahrzeug an?", en:"Do you offer a replacement vehicle?"},
-  "Oui. Pour toute réparation dès CHF 1’500.–, un véhicule de remplacement vous est mis gratuitement à disposition pendant la durée des travaux.": {de:"Ja. Bei jeder Reparatur ab CHF 1’500.– stellen wir Ihnen für die Dauer der Arbeiten kostenlos ein Ersatzfahrzeug zur Verfügung.", en:"Yes. For any repair from CHF 1’500.–, a replacement vehicle is provided free of charge for the duration of the work."},
+  "Oui. Pour toute réparation à partir de CHF 1’500.–, nous mettons gratuitement à votre disposition un véhicule de remplacement pendant toute la durée des travaux.": {de:"Ja. Bei jeder Reparatur ab CHF 1’500.– stellen wir Ihnen für die gesamte Dauer der Arbeiten kostenlos ein Ersatzfahrzeug zur Verfügung.", en:"Yes. For any repair from CHF 1’500.–, we provide a free replacement vehicle for the entire duration of the work."},
   "À partir de quel montant le véhicule de remplacement est-il gratuit ?": {de:"Ab welchem Betrag ist das Ersatzfahrzeug kostenlos?", en:"From what amount is the replacement vehicle free?"},
   "Dès CHF 1’500.– de réparation. Pour un montant inférieur, contactez-nous : nous verrons ensemble la meilleure solution pour votre mobilité.": {de:"Ab CHF 1’500.– Reparaturkosten. Bei einem tieferen Betrag kontaktieren Sie uns: Gemeinsam finden wir die beste Lösung für Ihre Mobilität.", en:"From CHF 1’500.– of repairs. For a lower amount, get in touch: together we’ll find the best solution for your mobility."},
 

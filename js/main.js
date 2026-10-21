@@ -54,7 +54,7 @@ const FAQ = [
   ['Travaillez-vous avec les assurances ?','Nous vous accompagnons dans vos démarches et vous fournissons un devis détaillé à transmettre à votre assureur. La prise en charge reste soumise aux conditions de votre contrat et à la décision de votre assurance.'],
   ['Comment fonctionne la franchise ?','La franchise est la part des frais qui reste à votre charge selon votre contrat. Selon votre situation et les conditions de votre assurance, nous cherchons avec vous une solution adaptée, comme dans un garage partenaire. Le plus simple est de nous expliquer votre cas.'],
   ['Combien de temps dure une réparation ?','La durée varie selon les dégâts, les pièces nécessaires et les travaux de peinture. Nous vous indiquons une estimation lors du devis et vous tenons informé en cas de changement.'],
-  ['Proposez-vous un véhicule de remplacement ?','Oui. Pour toute réparation dès CHF 1’500.–, un véhicule de remplacement vous est mis gratuitement à disposition pendant la durée des travaux.'],
+  ['Proposez-vous un véhicule de remplacement ?','Oui. Pour toute réparation à partir de CHF 1’500.–, nous mettons gratuitement à votre disposition un véhicule de remplacement pendant toute la durée des travaux.'],
   ['À partir de quel montant le véhicule de remplacement est-il gratuit ?','Dès CHF 1’500.– de réparation. Pour un montant inférieur, contactez-nous : nous verrons ensemble la meilleure solution pour votre mobilité.']
 ];
 

@@ -63,8 +63,13 @@ const svg = id=>`<svg><use href="#${id}"/></svg>`;
 const isPh = v=>/^\[.*\]$/.test(v);
 const esc = s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 // the site has more than one page: every part below checks that its section is on this page,
-// and links to homepage sections get this prefix when used from another page
-const HOME = document.getElementById('devis') ? '' : 'index.html';
+// and links to homepage sections get this prefix when used from another page.
+// Online the pages have clean addresses (/ and /realisations, see vercel.json); when the files are
+// opened straight from a computer (file://) those addresses don't exist, so links fall back to the file names.
+const LOCAL = location.protocol==='file:';
+const HOME = document.getElementById('devis') ? '' : (LOCAL ? 'index.html' : '/');
+if(LOCAL) $$('a[href^="/"]').forEach(a=>{ const h=a.getAttribute('href');
+  a.setAttribute('href', h==='/' ? 'index.html' : h.startsWith('/#') ? 'index.html'+h.slice(1) : h.slice(1)+'.html'); });
 
 /* ===== Languages =====
    French is the source text: it lives in index.html and in the data above.
@@ -389,6 +394,16 @@ function renderOk(){ if(!sent) return; $('#okTitle').textContent=tr('Merci {name
 onLang.push(renderOk);
 $('#formReset').addEventListener('click',()=>{ form.reset(); files=[]; skipped=0; sent=null; status=null; renderStatus(); renderNote(); renderThumbs(); toggleIns(); $$('.f.err',form).forEach(f=>f.classList.remove('err')); $$('[aria-invalid]',form).forEach(el=>el.removeAttribute('aria-invalid')); $('#formOk').hidden=true; $('#formBody').hidden=false; $('#q-prenom').focus(); });
 })();
+
+/* keep the address bar clean: section links still scroll to their section, but "#services" etc.
+   is taken off the address afterwards (also when arriving from another page with /#section) */
+function cleanHash(){ if(location.hash&&!LOCAL) history.replaceState(null,'',location.pathname+location.search); }
+addEventListener('hashchange',cleanHash);
+addEventListener('load',()=>{
+  const t=location.hash&&document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if(t) t.scrollIntoView({behavior:'instant'}); // land exactly on the section once images have their size
+  cleanHash();
+});
 
 /* apply the chosen language to the static page text */
 applyLang(true);

@@ -279,8 +279,9 @@ p{margin:0}
 .lb{position:fixed;inset:0;z-index:80;background:rgba(8,9,10,.96);display:grid;grid-template-rows:auto 1fr auto;padding:calc(16px + env(safe-area-inset-top,0px)) var(--gutr) calc(16px + env(safe-area-inset-bottom,0px)) var(--gut);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
 .lb.is-open{opacity:1;visibility:visible}
 .lb__top{display:flex;justify-content:space-between;align-items:center;gap:16px}
-.lb__stage{display:grid;place-items:center;min-height:0;padding:16px 0}
-.lb__stage img{max-height:100%;max-width:100%;object-fit:contain}
+.lb__stage{position:relative;min-height:0}
+/* the photo fills the space between the top bar and the arrows and is scaled down to fit whole, never cropped */
+.lb__stage img{position:absolute;inset:16px 0;width:100%;height:calc(100% - 32px);max-width:none;object-fit:contain}
 .lb__bot{display:flex;justify-content:center;gap:10px}
 .icon-btn{width:48px;height:48px;display:grid;place-items:center;border:1px solid var(--line-d);background:transparent;cursor:pointer;border-radius:2px;transition:background .2s,border-color .2s}
 .icon-btn:hover{background:rgba(246,247,247,.08);border-color:rgba(246,247,247,.4)}

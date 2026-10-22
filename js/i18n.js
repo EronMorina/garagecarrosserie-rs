@@ -98,7 +98,8 @@ const I18N = {
 
   // Tôlerie & redressage
   "Tôlerie & redressage": {de:"Spenglerei & Ausbeulen", en:"Panel beating & straightening"},
-  "Porsche Cayenne blanc vu de profil dans l’atelier": {de:"Weisser Porsche Cayenne im Profil in der Werkstatt", en:"White Porsche Cayenne seen from the side in the workshop"},
+  "Débosselage du hayon d’une voiture noire à l’atelier": {de:"Ausbeulen der Heckklappe eines schwarzen Autos in der Werkstatt", en:"Dent pulling on the tailgate of a black car in the workshop"},
+  "Redressage de la tôle au débosseleur, contrôlé sous la lumière de l’atelier": {de:"Richten des Blechs mit dem Ausbeulgerät, kontrolliert unter Werkstattlicht", en:"Straightening the panel with a dent puller, checked under workshop lighting"},
   "Redressage et remise en forme des panneaux déformés, ou remplacement de l’élément lorsque la réparation n’est pas la bonne solution.": {de:"Richten und Ausbeulen verformter Bleche – oder Ersatz des Teils, wenn eine Reparatur nicht die richtige Lösung ist.", en:"Straightening and reshaping of deformed panels, or replacing the part when repair isn’t the right solution."},
   "Panneaux": {de:"Bleche", en:"Panels"},
   "Redressage": {de:"Richten", en:"Straightening"},
@@ -115,7 +116,9 @@ const I18N = {
 
   // Remplacement de pare-brise
   "Remplacement de pare-brise": {de:"Ersatz der Windschutzscheibe", en:"Windscreen replacement"},
-  "Avant d’une Porsche 911 rouge et son pare-brise": {de:"Front eines roten Porsche 911 mit Windschutzscheibe", en:"Front of a red Porsche 911 and its windscreen"},
+  "Dépose d’un pare-brise à l’atelier, ventouses et outil de découpe en place": {de:"Ausbau einer Windschutzscheibe in der Werkstatt, mit Saugnäpfen und Schneidwerkzeug", en:"Windscreen removal in the workshop, with suction cups and cutting tool in place"},
+  "Photo précédente": {de:"Vorheriges Foto", en:"Previous photo"},
+  "Photo suivante": {de:"Nächstes Foto", en:"Next photo"},
   "Remplacement du pare-brise et des vitrages, avec une pose soignée et une vérification de l’étanchéité.": {de:"Ersatz von Windschutzscheibe und Fahrzeugscheiben – sorgfältig eingebaut und auf Dichtheit geprüft.", en:"Replacement of the windscreen and other glazing, with careful fitting and a sealing check."},
   "Pare-brise": {de:"Windschutzscheibe", en:"Windscreen"},
   "Vitrage": {de:"Verglasung", en:"Glazing"},

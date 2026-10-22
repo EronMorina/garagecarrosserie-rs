@@ -19,12 +19,12 @@ const SERVICES = [
    tags:['Raccord de teinte','Cabine','Vernis','Retouches'],
    inc:['Préparation : ponçage, masticage, apprêt','Recherche de la teinte d’origine','Application de la base et du vernis en cabine','Séchage maîtrisé','Lustrage et contrôle sous lumière'],
    faq:[['La teinte sera-t-elle identique ?','Nous recherchons la teinte d’origine et contrôlons le raccord avec les éléments voisins, sous plusieurs éclairages.'],['Peut-on peindre un seul élément ?','Oui, c’est même le cas le plus fréquent. Selon la teinte, un fondu sur l’élément voisin peut être nécessaire pour un raccord invisible.']]},
-  {id:'tolerie', anchor:'tolerie', title:'Tôlerie & redressage', img:'img/cay-side.jpg', alt:'Porsche Cayenne blanc vu de profil dans l’atelier',
+  {id:'tolerie', anchor:'tolerie', title:'Tôlerie & redressage', img:'img/tolerie-1.webp', alt:'Débosselage du hayon d’une voiture noire à l’atelier', more:[['img/tolerie-2.webp','Redressage de la tôle au débosseleur, contrôlé sous la lumière de l’atelier']],
    short:'Redressage et remise en forme des panneaux déformés, ou remplacement de l’élément lorsque la réparation n’est pas la bonne solution.',
    tags:['Panneaux','Redressage','Bas de caisse'],
    inc:['Évaluation de la déformation','Redressage et remise en forme de la tôle','Remplacement d’élément si nécessaire','Préparation pour la peinture','Vérification des alignements'],
    faq:[['Le redressage est-il durable ?','Un panneau correctement redressé puis protégé retrouve sa forme et sa tenue. Lorsque ce n’est pas possible, nous vous le disons.'],['Combien de temps faut-il ?','La durée dépend de l’ampleur des dégâts. Nous vous donnons une estimation avec le devis.']]},
-  {id:'pare-brise', anchor:'pare-brise', title:'Remplacement de pare-brise', img:'img/911-nose-p.jpg', alt:'Avant d’une Porsche 911 rouge et son pare-brise',
+  {id:'pare-brise', anchor:'pare-brise', title:'Remplacement de pare-brise', img:'img/pare-brise-1.jpg', alt:'Dépose d’un pare-brise à l’atelier, ventouses et outil de découpe en place',
    short:'Remplacement du pare-brise et des vitrages, avec une pose soignée et une vérification de l’étanchéité.',
    tags:['Pare-brise','Vitrage','Étanchéité'],
    inc:['Contrôle de l’impact ou de la fissure','Dépose de l’ancien vitrage','Pose et collage du nouveau pare-brise','Contrôle de l’étanchéité et des finitions','Nettoyage du véhicule'],
@@ -162,17 +162,18 @@ if(!reduce){ const h=$('#heroImg'); addEventListener('scroll',()=>{ const y=scro
 
 /* services */
 (function(){
-  const list=$('#svcList'), stage=$('#svcStage'), cap=$('#svcCap'); let cur=0;
+  const list=$('#svcList'), stage=$('#svcStage'), cap=$('#svcCap'), dots=$('#svcDots'); let cur=0;
+  const pics=s=>[[s.img,s.alt],...(s.more||[])];
   const items=SERVICES.map((s,i)=>{
     const li=document.createElement('li'); li.className='svc__item'; li.id=s.anchor; list.appendChild(li);
-    const im=document.createElement('img'); im.src=s.img; im.alt=''; im.loading=i?'lazy':'eager'; im.dataset.id=s.id; stage.prepend(im);
+    pics(s).forEach(([src],n)=>{ const im=document.createElement('img'); im.src=src; im.alt=''; im.loading=i||n?'lazy':'eager'; im.dataset.id=s.id; im.dataset.n=n; stage.prepend(im); });
     return li;
   });
   function render(){
     items.forEach((li,i)=>{ const s=SERVICES[i];
       li.innerHTML=`<h3><button class="svc__btn" aria-controls="b-${s.id}"><span class="svc__t">${tr(s.title)}</span><span class="ic">${svg('i-arrow')}</span></button></h3>
       <div class="svc__body" id="b-${s.id}"><div><div class="svc__body-in">
-        <img class="svc__mimg" src="${s.img}" alt="${esc(tr(s.alt))}" loading="lazy" width="1400" height="875">
+        <div class="svc__pics${pics(s).length>1?' is-multi':''}">${pics(s).map(([src,alt])=>`<img class="svc__mimg" src="${src}" alt="${esc(tr(alt))}" loading="lazy">`).join('')}</div>
         <p>${tr(s.short)}</p><div class="svc__tags">${s.tags.map(t=>`<span>${tr(t)}</span>`).join('')}</div>
         <div><button class="link" data-open="${s.id}">${tr('En savoir plus')} ${svg('i-arrow')}</button></div>
       </div></div></div>`;
@@ -183,9 +184,27 @@ if(!reduce){ const h=$('#heroImg'); addEventListener('scroll',()=>{ const y=scro
   function activate(i){
     cur=i;
     items.forEach((li,j)=>{ li.classList.toggle('is-on',i===j); $('.svc__btn',li).setAttribute('aria-expanded',i===j); $('.svc__body',li).inert=i!==j; });
-    $$('img',stage).forEach(im=>im.classList.toggle('is-on',im.dataset.id===SERVICES[i].id));
     cap.textContent=tr(SERVICES[i].title);
+    const k=pics(SERVICES[i]).length;
+    dots.innerHTML='<i></i>'.repeat(k>1?k:0);
+    $('#svcPrev').hidden=$('#svcNext').hidden=k<2;
+    showPic(0); restartTimer();
   }
+  function restartTimer(){
+    clearInterval(timer);
+    if(pics(SERVICES[cur]).length>1) timer=setInterval(()=>{ if(!paused) showPic(shown+1); },4000);
+  }
+  let timer=null, shown=0, paused=false;
+  function showPic(n){
+    const s=SERVICES[cur], k=pics(s).length; shown=(n+k)%k;
+    $$('img',stage).forEach(im=>im.classList.toggle('is-on',im.dataset.id===s.id&&+im.dataset.n===shown));
+    $$('i',dots).forEach((d,j)=>d.classList.toggle('is-on',j===shown));
+  }
+  // hovering the large photo holds it still
+  stage.addEventListener('mouseenter',()=>paused=true); stage.addEventListener('mouseleave',()=>paused=false);
+  // arrows: switch by hand, and give the visitor a full 4 s before the next automatic change
+  $('#svcPrev').addEventListener('click',()=>{ showPic(shown-1); restartTimer(); });
+  $('#svcNext').addEventListener('click',()=>{ showPic(shown+1); restartTimer(); });
   render(); onLang.push(render);
   list.addEventListener('click',e=>{ const b=e.target.closest('.svc__btn'); if(b) activate(items.indexOf(b.closest('.svc__item'))); });
   // anchors like the nav's "Carrosserie" open their item (also when the URL already has that hash)

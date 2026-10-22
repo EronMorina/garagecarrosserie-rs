@@ -224,6 +224,8 @@ const I18N = {
   "Demander les conditions": {de:"Bedingungen anfragen", en:"Ask about the conditions"},
 
   /* ---- gallery ---- */
+  "Nos réalisations — Carrosserie RS Suisse": {de:"Referenzen — Carrosserie RS Suisse", en:"Our work — Carrosserie RS Suisse"},
+  "Quelques véhicules passés par l’atelier Carrosserie RS Suisse à Satigny (Genève) : carrosserie, peinture et finition, en photos.": {de:"Fahrzeuge aus der Werkstatt von Carrosserie RS Suisse in Satigny (Genf): Carrosserie, Lackierung und Finish in Bildern.", en:"Vehicles that have passed through the Carrosserie RS Suisse workshop in Satigny (Geneva): bodywork, paint and finishing, in pictures."},
   "Chaque détail compte.": {de:"Jedes Detail zählt.", en:"Every detail counts."},
   "Quelques véhicules passés par l’atelier. Cliquez sur une image pour l’agrandir.": {de:"Einige Fahrzeuge aus unserer Werkstatt. Klicken Sie auf ein Bild, um es zu vergrössern.", en:"A few vehicles that have passed through the workshop. Click an image to enlarge it."},
   "Votre véhicule a besoin de notre savoir-faire ?": {de:"Braucht Ihr Fahrzeug unser Know-how?", en:"Does your vehicle need our expertise?"},

@@ -6,7 +6,8 @@ OUVRIR LE SITE
   Aucune installation ni connexion Internet requise (polices incluses).
 
 STRUCTURE
-  index.html        Page d'accueil (toutes les sections)
+  index.html        Page d'accueil (toutes les sections sauf la galerie)
+  realisations.html Page « Nos réalisations » (galerie photos)
   css/styles.css    Styles, design system, responsive, animations
   js/main.js        Interactions + données (services, galerie, FAQ, contact)
   js/i18n.js        Traductions allemand (DE) et anglais (EN)
@@ -62,7 +63,10 @@ MISE EN LIGNE
   hébergement, il faudrait l'adapter.
 
 APRÈS UNE MODIFICATION
+  L'en-tête, le menu et le pied de page existent dans index.html ET dans
+  realisations.html : une modification de l'un doit être reportée dans l'autre.
   Si vous modifiez css/styles.css, js/main.js ou js/i18n.js, augmentez le
-  numéro ?v=4 correspondant en bas de index.html (et en haut pour le CSS),
+  numéro ?v=… correspondant en bas de index.html et de realisations.html
+  (et en haut pour le CSS),
   par ex. ?v=5. Les navigateurs chargeront alors la nouvelle version au lieu
   d'une ancienne copie en cache.

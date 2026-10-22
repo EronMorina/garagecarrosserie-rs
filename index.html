@@ -22,7 +22,7 @@
 <link rel="icon" type="image/png" href="img/mark.png">
 <link rel="apple-touch-icon" href="img/mark.png">
 <link rel="preload" href="img/hero.jpg" as="image">
-<link rel="stylesheet" href="css/styles.css?v=12">
+<link rel="stylesheet" href="css/styles.css?v=14">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"AutoBodyShop","name":"Carrosserie RS Suisse","url":"https://www.garagecarrosserie-rs.ch/","logo":"https://www.garagecarrosserie-rs.ch/img/logo.png","image":"https://www.garagecarrosserie-rs.ch/img/og-image.png","foundingDate":"2021","telephone":"+41 22 785 18 50","email":"info@garagecarrosserie-rs.ch","address":{"@type":"PostalAddress","streetAddress":"Rue du Pré-Bouvier 10","postalCode":"1242","addressLocality":"Satigny","addressRegion":"GE","addressCountry":"CH"},"areaServed":"CH","sameAs":["https://www.instagram.com/carrosserierssuisse/"],"description":"Réparation de carrosserie, peinture automobile, tôlerie et redressage, remplacement de pare-brise, polissage de carrosserie."}
 </script>
@@ -57,10 +57,9 @@
       <ul class="nav__links">
         <li><a href="#top">Accueil</a></li>
         <li><a href="#services">Services</a></li>
-        <li><a href="#carrosserie">Carrosserie</a></li>
         <li><a href="#peinture">Peinture</a></li>
         <li><a href="#assurance">Assurance</a></li>
-        <li><a href="#realisations">Nos réalisations</a></li>
+        <li><a href="realisations.html">Nos réalisations</a></li>
         <li><a href="#a-propos">À propos</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -81,10 +80,9 @@
   <ul>
     <li><a href="#top">Accueil</a></li>
     <li><a href="#services">Services</a></li>
-    <li><a href="#carrosserie">Carrosserie</a></li>
     <li><a href="#peinture">Peinture</a></li>
     <li><a href="#assurance">Assurance</a></li>
-    <li><a href="#realisations">Nos réalisations</a></li>
+    <li><a href="realisations.html">Nos réalisations</a></li>
     <li><a href="#a-propos">À propos</a></li>
     <li><a href="#faq">Questions fréquentes</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -245,22 +243,6 @@
         <a class="btn btn--red" href="#devis">Demander les conditions <svg><use href="#i-arrow"/></svg></a>
         <a class="btn btn--ghost" href="#faq">Questions fréquentes</a>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ RÉALISATIONS ============ -->
-<section class="sec" id="realisations" aria-labelledby="gal-h">
-  <div class="wrap">
-    <div class="head rv">
-      <span class="eyebrow">Nos réalisations</span>
-      <h2 id="gal-h">Chaque détail compte.</h2>
-      <p class="lead muted">Quelques véhicules passés par l’atelier. Cliquez sur une image pour l’agrandir.</p>
-    </div>
-    <div class="gal" id="gal"></div>
-    <div class="gal__foot rv">
-      <p style="font-family:var(--f-display);font-stretch:110%;font-weight:700;font-size:1.3rem">Votre véhicule a besoin de notre savoir-faire ?</p>
-      <a class="btn btn--red" href="#devis">Obtenir une estimation <svg><use href="#i-arrow"/></svg></a>
     </div>
   </div>
 </section>
@@ -480,7 +462,7 @@
           <a class="icon-btn" href="https://www.instagram.com/carrosserierssuisse/" target="_blank" rel="noopener" aria-label="Instagram"><svg><use href="#i-ig"/></svg></a>
         </div>
       </div>
-      <div><h4>Navigation</h4><ul><li><a href="#top">Accueil</a></li><li><a href="#realisations">Nos réalisations</a></li><li><a href="#assurance">Assurance</a></li><li><a href="#a-propos">À propos</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+      <div><h4>Navigation</h4><ul><li><a href="#top">Accueil</a></li><li><a href="realisations.html">Nos réalisations</a></li><li><a href="#assurance">Assurance</a></li><li><a href="#a-propos">À propos</a></li><li><a href="#faq">FAQ</a></li></ul></div>
       <div><h4>Services</h4><ul id="footSvc"></ul></div>
       <div><h4>Contact</h4><ul>
         <li><a data-cfg="tel-link" href="#contact"><span data-cfg="phone"></span></a></li>
@@ -505,13 +487,6 @@
   <a class="red" href="#devis">Devis gratuit</a>
 </nav>
 
-<!-- lightbox -->
-<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Galerie" aria-hidden="true">
-  <div class="lb__top"><span class="mono" id="lbCap" style="color:var(--mist)"></span><button class="icon-btn" id="lbClose" aria-label="Fermer"><svg><use href="#i-close"/></svg></button></div>
-  <div class="lb__stage"><img id="lbImg" alt=""></div>
-  <div class="lb__bot"><button class="icon-btn" id="lbPrev" aria-label="Image précédente"><svg><use href="#i-left"/></svg></button><button class="icon-btn" id="lbNext" aria-label="Image suivante"><svg><use href="#i-right"/></svg></button></div>
-</div>
-
 <!-- service drawer -->
 <div class="drawer" id="drawer" aria-hidden="true">
   <div class="drawer__bg" data-close></div>
@@ -521,7 +496,7 @@
   </div>
 </div>
 
-<script src="js/i18n.js?v=13"></script>
-<script src="js/main.js?v=15"></script>
+<script src="js/i18n.js?v=14"></script>
+<script src="js/main.js?v=16"></script>
 </body>
 </html>

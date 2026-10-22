@@ -62,6 +62,9 @@ const $ = (s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySele
 const svg = id=>`<svg><use href="#${id}"/></svg>`;
 const isPh = v=>/^\[.*\]$/.test(v);
 const esc = s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+// the site has more than one page: every part below checks that its section is on this page,
+// and links to homepage sections get this prefix when used from another page
+const HOME = document.getElementById('devis') ? '' : 'index.html';
 
 /* ===== Languages =====
    French is the source text: it lives in index.html and in the data above.
@@ -102,7 +105,8 @@ function setWaLinks(){
 setWaLinks(); onLang.push(setWaLinks);
 // the map and the directions page open in the site's language
 function setMapLang(){
-  const dir=$('#mapDir'), map=$('#mapFrame'), d=new URL(dir.href), m=new URL(map.src);
+  const dir=$('#mapDir'), map=$('#mapFrame'); if(!dir||!map) return;
+  const d=new URL(dir.href), m=new URL(map.src);
   d.searchParams.set('hl',lang); dir.href=d;
   if(m.searchParams.get('hl')!==lang){ m.searchParams.set('hl',lang); map.src=m; }
 }
@@ -152,17 +156,18 @@ $$('a',menu).forEach(a=>a.addEventListener('click',()=>setMenu(false)));
 // the burger disappears on wide screens, so don't leave the menu stuck open
 matchMedia('(min-width:1340px)').addEventListener('change',e=>{ if(e.matches&&menu.classList.contains('is-open')) setMenu(false); });
 // active link: highlight the section in view, or nothing for sections without a nav link
-const links=$$('.nav__links a');
+const links=$$('.nav__links a:not([aria-current])');
 const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ const id=e.target.id||'top'; links.forEach(a=>a.classList.toggle('is-active',a.getAttribute('href')==='#'+id)); }}),{rootMargin:'-45% 0px -50% 0px'});
 $$('main > section').forEach(s=>io.observe(s));
 
 /* hero parallax */
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-if(!reduce){ const h=$('#heroImg'); addEventListener('scroll',()=>{ const y=scrollY; if(y<1000) h.style.transform=`translate3d(0,${y*0.18}px,0)`; },{passive:true}); }
+if(!reduce&&$('#heroImg')){ const h=$('#heroImg'); addEventListener('scroll',()=>{ const y=scrollY; if(y<1000) h.style.transform=`translate3d(0,${y*0.18}px,0)`; },{passive:true}); }
 
 /* services */
 (function(){
   const list=$('#svcList'), stage=$('#svcStage'), cap=$('#svcCap'), dots=$('#svcDots'); let cur=0;
+  if(!list) return;
   const pics=s=>[[s.img,s.alt],...(s.more||[])];
   const items=SERVICES.map((s,i)=>{
     const li=document.createElement('li'); li.className='svc__item'; li.id=s.anchor; list.appendChild(li);
@@ -178,7 +183,6 @@ if(!reduce){ const h=$('#heroImg'); addEventListener('scroll',()=>{ const y=scro
         <div><button class="link" data-open="${s.id}">${tr('En savoir plus')} ${svg('i-arrow')}</button></div>
       </div></div></div>`;
     });
-    $('#footSvc').innerHTML=SERVICES.map(s=>`<li><a href="#${s.anchor}" data-open="${s.id}">${tr(s.title)}</a></li>`).join('');
     activate(cur);
   }
   function activate(i){
@@ -214,6 +218,10 @@ if(!reduce){ const h=$('#heroImg'); addEventListener('scroll',()=>{ const y=scro
   fromHash(location.hash);
 })();
 
+/* footer service links (every page) */
+function renderFootSvc(){ $('#footSvc').innerHTML=SERVICES.map(s=>`<li><a href="${HOME}#${s.anchor}" data-open="${s.id}">${tr(s.title)}</a></li>`).join(''); }
+renderFootSvc(); onLang.push(renderFootSvc);
+
 /* drawer */
 const drawer=$('#drawer'); let lastFocus=null, drawerId=null;
 function renderDrawer(){
@@ -223,7 +231,7 @@ function renderDrawer(){
   $('#dBody').innerHTML=`<span class="eyebrow">${tr('Service')}</span><h2 id="dTitle" style="font-size:clamp(1.8rem,4vw,2.6rem)">${tr(s.title)}</h2><p class="lead" style="color:#3E454C">${tr(s.short)}</p>
     <div><h4>${tr('Ce que comprend l’intervention')}</h4><ul class="inc">${s.inc.map(x=>`<li>${tr(x)}</li>`).join('')}</ul></div>
     <div class="faq-mini"><h4>${tr('Questions fréquentes')}</h4>${s.faq.map(([q,a])=>`<details><summary>${tr(q)}</summary><p>${tr(a)}</p></details>`).join('')}</div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn--red" href="#devis" data-service="${serviceToForm(s.id)}" data-close>${tr('Demander un devis')} ${svg('i-arrow')}</a><a class="btn btn--ghost" href="#contact" data-close>${tr('Nous contacter')}</a></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn--red" href="${HOME}#devis" data-service="${serviceToForm(s.id)}" data-close>${tr('Demander un devis')} ${svg('i-arrow')}</a><a class="btn btn--ghost" href="${HOME}#contact" data-close>${tr('Nous contacter')}</a></div>
     <div><h4>${tr('Services associés')}</h4><div class="rel">${others.map(o=>`<button data-open="${o.id}">${tr(o.title)}</button>`).join('')}</div></div>`;
 }
 onLang.push(()=>{ if(drawer.classList.contains('is-open')) renderDrawer(); });
@@ -246,7 +254,8 @@ document.addEventListener('click',e=>{
 
 /* process progress line */
 (function(){
-  const list=$('#procList'), fill=$('.proc__fill',list), lis=$$('li',list);
+  const list=$('#procList'); if(!list) return;
+  const fill=$('.proc__fill',list), lis=$$('li',list);
   function upd(){
     const r=list.getBoundingClientRect(), mid=innerHeight*0.6;
     const p=Math.min(1,Math.max(0,(mid-r.top)/r.height));
@@ -258,7 +267,7 @@ document.addEventListener('click',e=>{
 
 /* gallery + lightbox */
 (function(){
-  const g=$('#gal');
+  const g=$('#gal'); if(!g) return;
   function render(){
     g.innerHTML='';
     GALLERY.forEach(([f,t,c],i)=>{
@@ -277,22 +286,28 @@ document.addEventListener('click',e=>{
   let sx=0; lb.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
   lb.addEventListener('touchend',e=>{ const d=e.changedTouches[0].clientX-sx; if(Math.abs(d)>50) show(cur+(d<0?1:-1)); });
   document.addEventListener('keydown',e=>{
-    if(lb.classList.contains('is-open')){ if(e.key==='Escape')close(); if(e.key==='ArrowRight')show(cur+1); if(e.key==='ArrowLeft')show(cur-1); }
-    else if(drawer.classList.contains('is-open') && e.key==='Escape') closeDrawer();
-    else if(menu.classList.contains('is-open') && e.key==='Escape') setMenu(false);
+    if(!lb.classList.contains('is-open')) return;
+    if(e.key==='Escape')close(); if(e.key==='ArrowRight')show(cur+1); if(e.key==='ArrowLeft')show(cur-1);
   });
 })();
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Escape'||$('#lb.is-open')) return; // the photo viewer handles its own keys
+  if(drawer.classList.contains('is-open')) closeDrawer();
+  else if(menu.classList.contains('is-open')) setMenu(false);
+});
 
 /* faq */
 function renderFaq(){
+  if(!$('#faqList')) return;
   const open=$$('#faqList details').map(d=>d.open); // keep the open answers open across a language switch
   $('#faqList').innerHTML=FAQ.map(([q,a],i)=>`<details${(open.length?open[i]:i===0)?' open':''}><summary>${tr(q)}<i aria-hidden="true"></i></summary><p class="ans">${tr(a)}</p></details>`).join('');
 }
 renderFaq(); onLang.push(renderFaq);
 
 /* quote form */
-const form=$('#quoteForm');
-function toggleIns(){ $('#insExtra').classList.toggle('is-on',$('#a-oui').checked); }
+function toggleIns(){ const x=$('#insExtra'); if(x) x.classList.toggle('is-on',$('#a-oui').checked); }
+(function(){
+const form=$('#quoteForm'); if(!form) return;
 $$('input[name="assure"]').forEach(r=>r.addEventListener('change',toggleIns));
 // photos
 let files=[], urls=[], skipped=0;
@@ -371,6 +386,7 @@ let sent=null;
 function renderOk(){ if(!sent) return; $('#okTitle').textContent=tr('Merci {name}, votre demande a bien été envoyée.',{name:sent.name}); $('#okVia').textContent=tr(sent.via); }
 onLang.push(renderOk);
 $('#formReset').addEventListener('click',()=>{ form.reset(); files=[]; skipped=0; sent=null; status=null; renderStatus(); renderNote(); renderThumbs(); toggleIns(); $$('.f.err',form).forEach(f=>f.classList.remove('err')); $$('[aria-invalid]',form).forEach(el=>el.removeAttribute('aria-invalid')); $('#formOk').hidden=true; $('#formBody').hidden=false; $('#q-prenom').focus(); });
+})();
 
 /* apply the chosen language to the static page text */
 applyLang(true);

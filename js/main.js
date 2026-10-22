@@ -262,7 +262,9 @@ document.addEventListener('click',e=>{
     fill.style.setProperty('--p',p.toFixed(3));
     lis.forEach(li=>{ const b=li.getBoundingClientRect(); li.classList.toggle('is-done',b.top+24<mid); });
   }
-  addEventListener('scroll',upd,{passive:true}); addEventListener('resize',upd); upd();
+  // the line stops at the middle of the last step's number box (its text can be taller than the box)
+  function measure(){ const last=lis[lis.length-1]; list.style.setProperty('--line-end',(list.offsetHeight-last.offsetTop-24)+'px'); upd(); }
+  addEventListener('scroll',upd,{passive:true}); addEventListener('resize',measure); addEventListener('load',measure); onLang.push(measure); measure();
 })();
 
 /* gallery + lightbox */

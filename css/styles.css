@@ -222,7 +222,7 @@ p{margin:0}
 .proc__side{position:sticky;top:110px;align-self:start;display:grid;gap:24px}
 .proc__track{position:relative}
 .proc__list{list-style:none;margin:0;padding:0;position:relative}
-.proc__track::before,.proc__fill{content:"";position:absolute;left:23px;top:8px;bottom:8px;width:2px;background:var(--line-l)}
+.proc__track::before,.proc__fill{content:"";position:absolute;left:23px;top:8px;bottom:var(--line-end,8px);width:2px;background:var(--line-l)}
 .proc__fill{z-index:0;background:var(--red);transform-origin:top;transform:scaleY(var(--p,0));transition:transform .15s linear}
 .proc__list li{display:grid;grid-template-columns:48px 1fr;gap:24px;padding-bottom:40px;position:relative}
 .proc__list li:last-child{padding-bottom:0}

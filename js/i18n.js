@@ -159,7 +159,7 @@ const I18N = {
   /* ---- paint ---- */
   "Cabine de peinture": {de:"Lackierkabine", en:"Paint booth"},
   "Bentley Continental GT dans la cabine de peinture de l’atelier, éléments masqués et panneau fraîchement verni": {de:"Bentley Continental GT in der Lackierkabine der Werkstatt, abgeklebt und mit frisch lackiertem Blech", en:"Bentley Continental GT in the workshop’s paint booth, masked off with a freshly lacquered panel"},
-  "Reflets sur le capot d’une Porsche 911 rouge après finition": {de:"Reflexe auf der Motorhaube eines roten Porsche 911 nach dem Finish", en:"Reflections on the bonnet of a red Porsche 911 after finishing"},
+  "La même Bentley Continental GT une fois terminée, prête à être restituée": {de:"Dieselbe Bentley Continental GT nach Abschluss der Arbeiten, bereit zur Rückgabe", en:"The same Bentley Continental GT once finished, ready for handover"},
   "Une finition à la hauteur de votre véhicule.": {de:"Ein Finish, das Ihrem Fahrzeug gerecht wird.", en:"A finish worthy of your vehicle."},
   "Une peinture réussie ne se voit pas : la teinte se raccorde au reste de la carrosserie, la surface est tendue, le vernis est régulier. Ce résultat se prépare couche après couche.": {de:"Eine gelungene Lackierung sieht man nicht: Der Farbton passt zur übrigen Carrosserie, die Oberfläche ist glatt, der Klarlack gleichmässig. Dieses Ergebnis entsteht Schicht für Schicht.", en:"A successful paint job is invisible: the colour matches the rest of the bodywork, the surface is smooth, the clear coat is even. That result is built layer by layer."},
   "Coupe des couches de peinture": {de:"Querschnitt der Lackschichten", en:"Cross-section of the paint layers"},

@@ -9,7 +9,7 @@ const CONFIG = {
 };
 
 const SERVICES = [
-  {id:'carrosserie', anchor:'carrosserie', title:'Réparation de carrosserie', img:'img/cay-rear.jpg', alt:'Arrière d’un Porsche Cayenne blanc à l’atelier',
+  {id:'carrosserie', anchor:'carrosserie', title:'Réparation de carrosserie', img:'img/carrosserie-avant.jpg', alt:'Mercedes-AMG GT avant réparation : feu arrière cassé et bouclier rayé', more:[['img/carrosserie-apres.jpg','La même Mercedes-AMG GT après réparation : feu remplacé, bouclier remis en état et teinte mate raccordée']],
    short:'Bosses, rayures profondes, éléments enfoncés ou dégâts après un accrochage : nous remettons en état les éléments extérieurs de votre véhicule dans le respect de ses lignes d’origine.',
    tags:['Accrochage','Pare-chocs','Portières','Ailes'],
    inc:['Diagnostic des dommages visibles et cachés','Réparation ou remplacement des éléments extérieurs','Ajustement des ouvrants et des jeux de carrosserie','Remise en peinture des zones réparées','Contrôle final avant restitution'],
@@ -43,7 +43,7 @@ const GALLERY = [
   {car:'Ferrari 599 GTB Fiorano', color:'Rouge', photos:['ferrari-1','ferrari-2','ferrari-3']},
   {car:'Ferrari F430', color:'Rouge', photos:['f430-1','f430-2']},
   {car:'Mercedes-AMG G 63', color:'Noir mat', photos:['g63-1','g63-2','g63-3']},
-  {car:'Mercedes-AMG GT 4 portes', color:'Bleu mat', photos:['amg-int','amg-ext','amg-gt-3']},
+  {car:'Mercedes-AMG GT 4 portes', color:'Bleu mat', photos:['amg-int','amg-ext','amg-gt-3','carrosserie-avant','carrosserie-apres']},
   {car:'Porsche 911 Carrera', color:'Rouge', photos:['911-34','911-side','911-nose','911-wheel']},
   {car:'Porsche 911 Carrera', color:'Noir', photos:['hero']},
   {car:'Porsche 911 Carrera', color:'Bleu', photos:['911-bleu-1','911-bleu-2']},

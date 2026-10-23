@@ -62,7 +62,8 @@ const I18N = {
 
   // Réparation de carrosserie
   "Réparation de carrosserie": {de:"Carrosseriereparatur", en:"Bodywork repair"},
-  "Arrière d’un Porsche Cayenne blanc à l’atelier": {de:"Heck eines weissen Porsche Cayenne in der Werkstatt", en:"Rear of a white Porsche Cayenne in the workshop"},
+  "Mercedes-AMG GT avant réparation : feu arrière cassé et bouclier rayé": {de:"Mercedes-AMG GT vor der Reparatur: zerbrochenes Rücklicht und zerkratzte Stossstange", en:"Mercedes-AMG GT before repair: broken tail light and scratched bumper"},
+  "La même Mercedes-AMG GT après réparation : feu remplacé, bouclier remis en état et teinte mate raccordée": {de:"Dieselbe Mercedes-AMG GT nach der Reparatur: Rücklicht ersetzt, Stossstange instand gesetzt und Mattlack angeglichen", en:"The same Mercedes-AMG GT after repair: tail light replaced, bumper restored and matte paint matched"},
   "Bosses, rayures profondes, éléments enfoncés ou dégâts après un accrochage : nous remettons en état les éléments extérieurs de votre véhicule dans le respect de ses lignes d’origine.": {de:"Dellen, tiefe Kratzer, eingedrückte Teile oder Schäden nach einem Parkrempler: Wir setzen die Aussenteile Ihres Fahrzeugs instand und respektieren dabei seine ursprüngliche Linienführung.", en:"Dents, deep scratches, pushed-in panels or damage after a scrape: we restore your vehicle’s exterior parts while respecting its original lines."},
   "Accrochage": {de:"Parkschaden", en:"Minor collision"},
   "Pare-chocs": {de:"Stossstangen", en:"Bumpers"},

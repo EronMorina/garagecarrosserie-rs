@@ -36,17 +36,24 @@ const SERVICES = [
    faq:[['Le polissage retire-t-il toutes les rayures ?','Il élimine les micro-rayures et les voiles. Une rayure qui a traversé le vernis demande une retouche ou une remise en peinture.'],['À quelle fréquence polir ?','Un polissage correctif n’est pas à refaire souvent : un entretien régulier suffit ensuite à préserver le résultat.']]}
 ];
 
+// Réalisations: one entry per car, shown sorted by name. The first photo is the tile's cover;
+// photos are img/<name>.jpg. Number plates are pixelated in the photo files themselves.
 const GALLERY = [
-  ['911-34','Porsche 911 Carrera','Atelier'],
-  ['amg-int','Mercedes-AMG GT 4 portes','Finition mate'],
-  ['911-nose','Porsche 911','Brillance'],
-  ['cay-side','Porsche Cayenne','Atelier'],
-  ['911-wheel','Porsche 911','Détail'],
-  ['hero','Porsche 911 Carrera','Atelier'],
-  ['911-side','Porsche 911 Carrera','Profil'],
-  ['cay-rear','Porsche Cayenne Turbo','Atelier'],
-  ['cay-booth','Porsche Cayenne Coupé','Zone peinture']
-];
+  {car:'Bentley Continental GT Supersports', color:'Gris', photos:['bentley-1','bentley-2','bentley-3','bentley-4']},
+  {car:'Ferrari 599 GTB Fiorano', color:'Rouge', photos:['ferrari-1','ferrari-2','ferrari-3']},
+  {car:'Ferrari F430', color:'Rouge', photos:['f430-1','f430-2']},
+  {car:'Mercedes-AMG G 63', color:'Noir mat', photos:['g63-1','g63-2','g63-3']},
+  {car:'Mercedes-AMG GT 4 portes', color:'Bleu mat', photos:['amg-int','amg-ext','amg-gt-3']},
+  {car:'Porsche 911 Carrera', color:'Rouge', photos:['911-34','911-side','911-nose','911-wheel']},
+  {car:'Porsche 911 Carrera', color:'Noir', photos:['hero']},
+  {car:'Porsche 911 Carrera', color:'Bleu', photos:['911-bleu-1','911-bleu-2']},
+  {car:'Porsche 911 GT3', color:'Vert', photos:['gt3-1','gt3-3','gt3-2']},
+  {car:'Porsche 911 Turbo S', color:'Noir', photos:['911-turbo-1','911-turbo-2','911-turbo-3']},
+  {car:'Porsche Cayenne Coupé', color:'Bleu', photos:['cay-booth']},
+  {car:'Porsche Cayenne Turbo', color:'Blanc', photos:['cay-side','cay-rear']},
+  {car:'Porsche Macan GTS', color:'Noir', photos:['macan-1','macan-2','macan-3']},
+  {car:'Rolls-Royce Ghost', color:'Gris', photos:['rolls-1','rolls-2']}
+].sort((a,b)=>a.car.localeCompare(b.car,'fr')||a.color.localeCompare(b.color,'fr'));
 
 const FAQ = [
   ['Combien coûte une réparation de carrosserie ?','Le prix dépend de l’élément touché, de l’étendue des dégâts, de la peinture et des pièces éventuelles. Chaque véhicule est différent : nous établissons un devis détaillé après évaluation. Vous pouvez commencer par nous envoyer des photos.'],
@@ -171,7 +178,7 @@ if(!reduce&&$('#heroImg')){ const h=$('#heroImg'); addEventListener('scroll',()=
 
 /* services */
 (function(){
-  const list=$('#svcList'), stage=$('#svcStage'), cap=$('#svcCap'), dots=$('#svcDots'); let cur=0;
+  const list=$('#svcList'), stage=$('#svcStage'), cap=$('#svcCap'), dots=$('#svcDots'); let cur=0, isOpen=true;
   if(!list) return;
   const pics=s=>[[s.img,s.alt],...(s.more||[])];
   const items=SERVICES.map((s,i)=>{
@@ -188,10 +195,12 @@ if(!reduce&&$('#heroImg')){ const h=$('#heroImg'); addEventListener('scroll',()=
         <div><button class="link" data-open="${s.id}">${tr('En savoir plus')} ${svg('i-arrow')}</button></div>
       </div></div></div>`;
     });
-    activate(cur);
+    // a portrait photo gets a taller frame on phones instead of being cropped to a wide strip
+    $$('.svc__mimg',list).forEach(im=>{ const f=()=>im.classList.toggle('is-tall',im.naturalHeight>im.naturalWidth); im.complete?f():im.addEventListener('load',f,{once:true}); });
+    const wasOpen=isOpen; activate(cur); if(!wasOpen) collapse(); // a language switch keeps the list as it was
   }
   function activate(i){
-    cur=i;
+    cur=i; isOpen=true;
     items.forEach((li,j)=>{ li.classList.toggle('is-on',i===j); $('.svc__btn',li).setAttribute('aria-expanded',i===j); $('.svc__body',li).inert=i!==j; });
     cap.textContent=tr(SERVICES[i].title);
     const k=pics(SERVICES[i]).length;
@@ -215,7 +224,9 @@ if(!reduce&&$('#heroImg')){ const h=$('#heroImg'); addEventListener('scroll',()=
   $('#svcPrev').addEventListener('click',()=>{ showPic(shown-1); restartTimer(); });
   $('#svcNext').addEventListener('click',()=>{ showPic(shown+1); restartTimer(); });
   render(); onLang.push(render);
-  list.addEventListener('click',e=>{ const b=e.target.closest('.svc__btn'); if(b) activate(items.indexOf(b.closest('.svc__item'))); });
+  // clicking the open service closes it; the large photo keeps showing the last one
+  function collapse(){ isOpen=false; items.forEach(li=>{ li.classList.remove('is-on'); $('.svc__btn',li).setAttribute('aria-expanded',false); $('.svc__body',li).inert=true; }); }
+  list.addEventListener('click',e=>{ const b=e.target.closest('.svc__btn'); if(!b) return; const i=items.indexOf(b.closest('.svc__item')); if(i===cur&&isOpen) collapse(); else activate(i); });
   // anchors like the nav's "Carrosserie" open their item (also when the URL already has that hash)
   const fromHash=h=>{ const i=SERVICES.findIndex(s=>'#'+s.anchor===h); if(i>-1) activate(i); };
   addEventListener('hashchange',()=>fromHash(location.hash));
@@ -275,26 +286,40 @@ document.addEventListener('click',e=>{
 /* gallery + lightbox */
 (function(){
   const g=$('#gal'); if(!g) return;
+  const count=n=>n===1?tr('1 photo'):tr('{n} photos',{n});
   function render(){
     g.innerHTML='';
-    GALLERY.forEach(([f,t,c],i)=>{
-      const b=document.createElement('button'); b.className='g'+(i+1); b.setAttribute('aria-label',tr('Agrandir : {t}',{t}));
-      b.innerHTML=`<img src="img/${f}.jpg" alt="${esc(t)} — ${esc(tr(c))}" loading="lazy"><span class="cap"><span>${tr(c)}</span><b>${t}</b></span>`;
+    GALLERY.forEach((a,i)=>{
+      const b=document.createElement('button'); b.setAttribute('aria-label',`${tr('Agrandir : {t}',{t:tr(a.car)})} (${tr(a.color)}, ${count(a.photos.length)})`);
+      b.innerHTML=`<img src="img/${a.photos[0]}.jpg" alt="${esc(tr(a.car))} — ${esc(tr(a.color))}" loading="lazy">${a.photos.length>1?`<span class="count">${count(a.photos.length)}</span>`:''}<span class="cap"><span>${tr(a.color)}</span><b>${tr(a.car)}</b></span>`;
       b.addEventListener('click',()=>open(i)); g.appendChild(b);
     });
   }
   render(); onLang.push(render);
-  const lb=$('#lb'), img=$('#lbImg'), cap=$('#lbCap'); let cur=0, last=null;
-  function show(i){ cur=(i+GALLERY.length)%GALLERY.length; const [f,t,c]=GALLERY[cur]; img.src=`img/${f}.jpg`; img.alt=t; cap.textContent=`${String(cur+1).padStart(2,'0')} / ${String(GALLERY.length).padStart(2,'0')} — ${t}`; }
-  function open(i){ last=document.activeElement; show(i); lb.classList.add('is-open'); lb.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; isolate([lb]); $('#lbClose').focus(); }
+  // the viewer shows one car at a time; its arrows go through that car's photos
+  const lb=$('#lb'), img=$('#lbImg'), cap=$('#lbCap'); let car=0, cur=0, last=null;
+  function show(i){
+    const a=GALLERY[car], n=a.photos.length; cur=(i+n)%n;
+    img.src=`img/${a.photos[cur]}.jpg`; img.alt=`${tr(a.car)} — ${tr(a.color)}`;
+    cap.textContent=`${tr(a.car)} · ${tr(a.color)}${n>1?` — ${cur+1} / ${n}`:''}`;
+  }
+  // next/previous go through this car's photos, then carry on to the next (or previous) car
+  function step(d){
+    let i=cur+d;
+    if(i>=GALLERY[car].photos.length){ car=(car+1)%GALLERY.length; i=0; }
+    else if(i<0){ car=(car-1+GALLERY.length)%GALLERY.length; i=GALLERY[car].photos.length-1; }
+    show(i);
+  }
+  onLang.push(()=>{ if(lb.classList.contains('is-open')) show(cur); });
+  function open(i){ last=document.activeElement; car=i; show(0); lb.classList.add('is-open'); lb.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; isolate([lb]); $('#lbClose').focus(); }
   function close(){ lb.classList.remove('is-open'); lb.setAttribute('aria-hidden','true'); document.body.style.overflow=''; isolate(null); last&&last.focus(); }
-  $('#lbClose').onclick=close; $('#lbPrev').onclick=()=>show(cur-1); $('#lbNext').onclick=()=>show(cur+1);
+  $('#lbClose').onclick=close; $('#lbPrev').onclick=()=>step(-1); $('#lbNext').onclick=()=>step(1);
   lb.addEventListener('click',e=>{ if(e.target===lb||e.target.classList.contains('lb__stage')) close(); });
   let sx=0; lb.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
-  lb.addEventListener('touchend',e=>{ const d=e.changedTouches[0].clientX-sx; if(Math.abs(d)>50) show(cur+(d<0?1:-1)); });
+  lb.addEventListener('touchend',e=>{ const d=e.changedTouches[0].clientX-sx; if(Math.abs(d)>50) step(d<0?1:-1); });
   document.addEventListener('keydown',e=>{
     if(!lb.classList.contains('is-open')) return;
-    if(e.key==='Escape')close(); if(e.key==='ArrowRight')show(cur+1); if(e.key==='ArrowLeft')show(cur-1);
+    if(e.key==='Escape')close(); if(e.key==='ArrowRight')step(1); if(e.key==='ArrowLeft')step(-1);
   });
 })();
 document.addEventListener('keydown',e=>{
@@ -302,6 +327,30 @@ document.addEventListener('keydown',e=>{
   if(drawer.classList.contains('is-open')) closeDrawer();
   else if(menu.classList.contains('is-open')) setMenu(false);
 });
+
+/* À propos: slideshow of the cars from the gallery (homepage) */
+(function(){
+  const show=$('#aboutShow'); if(!show) return;
+  const first=$('img',show), cap=$('#aboutCap');
+  const cars=[{src:first.getAttribute('src'), car:'Mercedes-AMG GT 4 portes', color:'Bleu mat'},
+    ...GALLERY.filter(a=>!a.photos.includes('amg-ext')).map(a=>({src:`img/${a.photos[0]}.jpg`, car:a.car, color:a.color}))];
+  // the other photos are only fetched just before they're shown, so the homepage stays light
+  const slides=[first, ...cars.slice(1).map(c=>{ const im=document.createElement('img'); im.dataset.src=c.src; im.width=1400; im.height=1050; im.decoding='async'; show.insertBefore(im,cap); return im; })];
+  const load=i=>{ const im=slides[i]; if(im.dataset.src){ im.src=im.dataset.src; delete im.dataset.src; } };
+  let cur=0, paused=false, visible=false;
+  function label(){ cap.textContent=`${tr(cars[cur].car)} · ${tr(cars[cur].color)}`; slides.forEach((im,i)=>{ if(i) im.alt=`${tr(cars[i].car)} — ${tr(cars[i].color)}`; }); }
+  function go(i){
+    const prev=cur; cur=(i+slides.length)%slides.length; load(cur); load((cur+1)%slides.length);
+    slides.forEach((im,j)=>{ im.classList.toggle('is-on',j===cur); im.classList.toggle('was-on',j===prev&&j!==cur); });
+    label();
+  }
+  const ready=im=>im.complete&&im.naturalWidth>0; // only move on once the next photo has loaded (never fade to blank)
+  // holds still under the mouse, and only runs while it's on screen
+  show.addEventListener('mouseenter',()=>paused=true); show.addEventListener('mouseleave',()=>paused=false);
+  new IntersectionObserver(es=>{ visible=es[0].isIntersecting; }).observe(show);
+  setInterval(()=>{ if(!paused&&visible&&!document.hidden&&ready(slides[(cur+1)%slides.length])) go(cur+1); },3000);
+  onLang.push(label); go(0);
+})();
 
 /* faq */
 function renderFaq(){

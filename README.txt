@@ -12,6 +12,8 @@ STRUCTURE
   js/main.js        Interactions + données (services, galerie, FAQ, contact)
   js/i18n.js        Traductions allemand (DE) et anglais (EN)
   img/              Photos, logo, favicon
+  img/slide/        Copies légères (960 px) pour le diaporama « À propos »
+                    (sans copie, le diaporama prend la photo en taille réelle)
   fonts/            Polices Archivo, Hanken Grotesk, IBM Plex Mono (licence OFL)
 
 LANGUES (FR / DE / EN)

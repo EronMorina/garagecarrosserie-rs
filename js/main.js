@@ -333,22 +333,24 @@ document.addEventListener('keydown',e=>{
   const show=$('#aboutShow'); if(!show) return;
   const first=$('img',show), cap=$('#aboutCap');
   const cars=[{src:first.getAttribute('src'), car:'Mercedes-AMG GT 4 portes', color:'Bleu mat'},
-    ...GALLERY.filter(a=>!a.photos.includes('amg-ext')).map(a=>({src:`img/${a.photos[0]}.jpg`, car:a.car, color:a.color}))];
-  // the other photos are only fetched just before they're shown, so the homepage stays light
-  const slides=[first, ...cars.slice(1).map(c=>{ const im=document.createElement('img'); im.dataset.src=c.src; im.width=1400; im.height=1050; im.decoding='async'; show.insertBefore(im,cap); return im; })];
-  const load=i=>{ const im=slides[i]; if(im.dataset.src){ im.src=im.dataset.src; delete im.dataset.src; } };
-  let cur=0, paused=false, visible=false;
+    ...GALLERY.filter(a=>!a.photos.includes('amg-ext')).map(a=>({name:a.photos[0], car:a.car, color:a.color}))];
+  // slides use light copies from img/slide/ (960 px); a car without one falls back to its full-size photo.
+  // Photos are only fetched shortly before they're shown, so the homepage stays light.
+  const slides=[first, ...cars.slice(1).map(c=>{ const im=document.createElement('img'); im.dataset.name=c.name; im.width=960; im.height=720; im.decoding='async'; show.insertBefore(im,cap); return im; })];
+  const load=i=>{ const im=slides[i]; if(!im.dataset.name) return; const n=im.dataset.name; delete im.dataset.name;
+    im.onerror=()=>{ im.onerror=null; im.src=`img/${n}.jpg`; }; im.src=`img/slide/${n}.jpg`; };
+  let cur=0, visible=false, shownAt=performance.now();
   function label(){ cap.textContent=`${tr(cars[cur].car)} · ${tr(cars[cur].color)}`; slides.forEach((im,i)=>{ if(i) im.alt=`${tr(cars[i].car)} — ${tr(cars[i].color)}`; }); }
   function go(i){
-    const prev=cur; cur=(i+slides.length)%slides.length; load(cur); load((cur+1)%slides.length);
+    const prev=cur; cur=(i+slides.length)%slides.length; shownAt=performance.now();
+    for(let k=0;k<3;k++) load((cur+k)%slides.length); // the current photo and the next two
     slides.forEach((im,j)=>{ im.classList.toggle('is-on',j===cur); im.classList.toggle('was-on',j===prev&&j!==cur); });
     label();
   }
   const ready=im=>im.complete&&im.naturalWidth>0; // only move on once the next photo has loaded (never fade to blank)
-  // holds still under the mouse, and only runs while it's on screen
-  show.addEventListener('mouseenter',()=>paused=true); show.addEventListener('mouseleave',()=>paused=false);
-  new IntersectionObserver(es=>{ visible=es[0].isIntersecting; }).observe(show);
-  setInterval(()=>{ if(!paused&&visible&&!document.hidden&&ready(slides[(cur+1)%slides.length])) go(cur+1); },3000);
+  // runs while it's on screen: a new car every 3 s, or the moment the next photo is ready if it was still loading
+  new IntersectionObserver(es=>{ const v=es[0].isIntersecting; if(v&&!visible) shownAt=performance.now(); visible=v; }).observe(show); // full 3 s for the photo you scroll to
+  setInterval(()=>{ if(visible&&!document.hidden&&performance.now()-shownAt>=3000&&ready(slides[(cur+1)%slides.length])) go(cur+1); },100);
   onLang.push(label); go(0);
 })();
 
